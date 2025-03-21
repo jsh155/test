@@ -29,6 +29,10 @@ jobs:
           repository: jsh155/ai_review
           path: ai-review-tool
 
+      # 디버깅 단계 추가: ./ai-review-tool 디렉토리 내용 확인
+      - name: Debug - List files in ai-review-tool
+        run: ls -la ./ai-review-tool
+
       - name: Install Dependencies
         working-directory: ./ai-review-tool
         run: npm install
@@ -39,6 +43,6 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          GEMINI_MODEL: "gemini-2.0-pro-exp-02-05"  # 원하는 모델로 변경 가능
+          GEMINI_MODEL: "gemini-2.0-pro-exp-02-05"
         working-directory: ./ai-review-tool
         run: node ai_review.js
