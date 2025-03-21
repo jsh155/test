@@ -1,0 +1,44 @@
+name: AI PR Reviewer
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+
+permissions:
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Current Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Checkout AI Review Tool
+        uses: actions/checkout@v3
+        with:
+          repository: jsh155/ai_review
+          path: ai-review-tool
+
+      - name: Install Dependencies
+        working-directory: ./ai-review-tool
+        run: npm install
+
+      - name: Run AI Review Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GEMINI_MODEL: "gemini-2.0-pro-exp-02-05"  # 원하는 모델로 변경 가능
+        working-directory: ./ai-review-tool
+        run: node ai_review.js
