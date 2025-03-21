@@ -29,10 +29,6 @@ jobs:
           repository: jsh155/ai_review
           path: ai-review-tool
 
-      # 디버깅 단계 추가: ./ai-review-tool 디렉토리 내용 확인
-      - name: Debug - List files in ai-review-tool
-        run: ls -la ./ai-review-tool
-
       - name: Install Dependencies
         working-directory: ./ai-review-tool
         run: npm install
